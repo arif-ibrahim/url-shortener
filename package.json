@@ -1,7 +1,7 @@
 {
   "name": "url-shortener",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/index.js",
   "repository": "git@github.com:arif87/url-shortener.git",
   "author": "arif87 <arif.ibrahm@gmail.com>",
   "license": "MIT",

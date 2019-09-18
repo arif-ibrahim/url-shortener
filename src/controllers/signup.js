@@ -15,7 +15,7 @@ router.post('/signup', signupValidator, async (req, res)=>{
     const errors = validationResult(req);
     if (!errors.isEmpty()){
         return res
-            .status(400)
+            .status(422)
             .json({errors: errors.array()})
     }
     let chunks                  = generate(req.body.password);

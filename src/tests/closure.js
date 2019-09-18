@@ -1,11 +1,14 @@
-function foo() {
-    // const args = [].slice.call(arguments);
-    const arg1 = arguments[0]
-    const arg2 = arguments[1]
-    return function () {
-        return arg1 + arg2;
+function mult(...args) {
+    if (args.length <=2){
+        return args[0] * args[1];
     }
+    return (args[0] * mult(...args.slice(1)))
 }
 
-const myFoo = foo(12, 19, 199);
-console.log(myFoo());
+let arr = [];
+for (i=1; i<60; i++){
+    arr.push(i);
+}
+
+console.log(mult(...arr));
+

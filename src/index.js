@@ -3,6 +3,7 @@ const bp      = require('body-parser');
 const db      = require('./utils/db');
 const signup  = require('./controllers/signup')
 const login   = require('./controllers/login')
+const redirects = require('./controllers/redirects');
 const auth    = require('./middleware/auth')
 const errh    = require('./middleware/error_handler');
 
@@ -11,7 +12,9 @@ app           = express();
 app.use(bp.json());
 app.use(signup);
 app.use(login);
+
 app.use('/api', auth);
+app.use(redirects);
 
 //last middleware
 app.use(errh);

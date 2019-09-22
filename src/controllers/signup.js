@@ -1,8 +1,9 @@
 const router                    = require('express').Router();
-const {check, validationResult} = require('express-validator/check');
+const {check} = require('express-validator/check');
 const {generate}                = require('../utils/password');
 const {User}                    = require('../utils/db');
 const _p                        = require('../utils/promise_errors');
+const reject_validate           = require('../middleware/reject_invalid');
 
 
 const signupValidator = [
@@ -11,13 +12,7 @@ const signupValidator = [
     check('password').isLength({min: 5})
 ];
 
-router.post('/signup', signupValidator, async (req, res)=>{
-    const errors = validationResult(req);
-    if (!errors.isEmpty()){
-        return res
-            .status(422)
-            .json({errors: errors.array()})
-    }
+router.post('/signup', signupValidator, reject_validate, async (req, res, next)=>{
     let chunks                  = generate(req.body.password);
     let password                = `${chunks.salt}.${chunks.hash}`;
     let {name, email}           = req.body;
@@ -25,10 +20,7 @@ router.post('/signup', signupValidator, async (req, res)=>{
         name, email, password
     }));
     if (ucErr && !userCreated){
-        res.status(400).json({
-            error: true,
-            message: ucErr.message,
-        })
+        next(ucErr);
     }
     else {
         res.json({

@@ -25,4 +25,21 @@ router.post('/api/v1/redirects', entryValidator, rejectInvalid, async (req, res,
     }
 })
 
+router.get('/api/v1/redirects', async (req, res)=>{
+    let [dbErr, myDirection] = await _p(Direction.findAll({
+        where: {
+            user_id: req.user.id
+        },
+        limit: 10
+    }));
+    if (dbErr){
+        next(dbErr);
+    }
+    else {
+        res.json(myDirection.map(d=>{return {user_id: d.user_id, destination: d.destination, hash: d.hash, createdAt: d.createdAt }}));
+    }
+
+
+})
+
 module.exports = router;

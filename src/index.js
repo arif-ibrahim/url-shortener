@@ -6,9 +6,11 @@ const login   = require('./controllers/login')
 const redirects = require('./controllers/redirects');
 const auth    = require('./middleware/auth')
 const errh    = require('./middleware/error_handler');
+const cors    = require('./middleware/cors');
 
 app           = express();
 
+app.use(cors);
 app.use(bp.json());
 app.use(signup);
 app.use(login);
